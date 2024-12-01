@@ -1,0 +1,41 @@
+lease tell what is output of the program and is it follow O/p and LSP of Solid Principle: public class Main {
+
+    public  class Parent {
+        void run() throws Exception {
+            System.out.println("Parent.run");
+            walk();
+        }
+
+        void walk() {
+            System.out.println("Parent.walk");
+        }
+    }
+
+
+    public static class Child extends Parent {
+        void run() throws Exception {
+            System.out.println("Child.run");
+
+            super.run();
+
+            throw new UserDefinedException();
+        }
+
+        void walk() {
+            System.out.println("Child.walk");
+            super.walk();
+        }
+
+        void talk() {
+            System.out.println("Child.talk");
+            super.walk();
+        }
+    }
+
+    public static void main(String[] args) {
+        Parent p = new Child();
+        p.run();
+        p.talk();
+    }
+}
+
