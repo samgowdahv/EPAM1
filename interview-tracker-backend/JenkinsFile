@@ -1,0 +1,75 @@
+def TRACKER_SERVICES_FILE_VERSION_NAME=''
+BRANCH_NAME = scm.branches[0].name[2..-1]
+pipeline {
+
+	agent any
+
+	options {
+		timestamps()
+        disableConcurrentBuilds()
+	}
+	environment {
+        CHROME_BIN="/usr/bin/chromium-browser"
+    }
+
+	stages {
+		stage('Build') {
+			steps{
+				script {
+
+				    sh 'cp -R /var/lib/jenkins/workspace/interview-tracker-backend/* .'
+				    sh 'pwd'
+					sh 'mvn clean install -DskipTests=true dependency:copy-dependencies'
+					date = sh(returnStdout: true, script:'date +"%m-%d-%Y_%H-%M"').trim()
+					latest_commit = sh(returnStdout: true, script:"git log -n 1 --pretty=format:%H .").trim()
+					short_hash = sh(returnStdout: true, script: "echo ${latest_commit}|cut -c1-8").trim()
+					echo "${date}"
+					echo "${short_hash}"
+					echo "${BRANCH_NAME}"
+					echo "${BUILD_NUMBER}"
+				    TRACKER_SERVICES_FILE_VERSION_NAME ="client-interview-tracker_${date}_${short_hash}_${BRANCH_NAME}_${BUILD_NUMBER}.jar"
+                    echo "client-interview-tracker_${date}_${short_hash}_${BRANCH_NAME}_${BUILD_NUMBER}"
+					//sh "mv target/*.jar target/${TRACKER_SERVICES_FILE_VERSION_NAME}" 
+					//sh "mv target/client-interview-tracker-${BUILD_NUMBER} target/${TRACKER_SERVICES_FILE_VERSION_NAME}"
+					}
+					//catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    //sh "exit 1"
+               		//}
+				}
+		}
+
+		stage ('Deploy') {
+			agent any
+        			steps {
+
+        					script {
+        						if (TRACKER_SERVICES_FILE_VERSION_NAME != '') {
+        							echo "============================================================"
+        							echo "        Deploying client-interview-tracker .       "
+        							echo "============================================================"
+									echo "jar file name :: target/${TRACKER_SERVICES_FILE_VERSION_NAME}"
+        							//sh 'java -jar target/${TRACKER_SERVICES_FILE_VERSION_NAME} --server.port=8001'
+									//sh 'java -jar target/client-interview-tracker-${BUILD_NUMBER} --server.port=8001'
+									sh 'java -jar /var/lib/jenkins/.m2/repository/com/portal/backend/client-interview-tracker/${BUILD_NUMBER}/client-interview-tracker-${BUILD_NUMBER}.jar --server.port=8001'
+
+									//sh 'sudo nohup java -jar /var/lib/jenkins/.m2/repository/com/portal/backend/client-interview-tracker/${BUILD_NUMBER}/client-interview-tracker-${BUILD_NUMBER}.jar --server.port=8001 & echo $! > ./pidtracker.file &'
+									echo "        Deploed successfully      "
+        						}
+        						else {
+        							echo "not deployed..."
+        						}
+        					}
+        			}
+        		}
+
+
+
+	}
+	// job level post action
+post {
+		always {
+			echo "post operations are tesing"
+			//deleteDir()
+		}
+	}
+}
