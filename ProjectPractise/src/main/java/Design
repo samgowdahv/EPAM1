@@ -1,0 +1,4 @@
+In order to save the temparature  for every 5 seconds
+POST request store PM KEY, Creation time , current temparature
+Create the SingleColumnIndex on creation date column.
+For get API write a SQL query to return the data
