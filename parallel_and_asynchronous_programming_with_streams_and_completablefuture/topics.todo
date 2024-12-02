@@ -1,0 +1,76 @@
+Parallel and Asynchronous Programming with 
+	Streams and CompletableFuture
+Venkat Subramaniam
+Email: venkats@agiledeveloper.com
+Twitter: @venkat_s
+http://www.agiledeveloper.com download link
+
+Parallel vs. Asynchronous:
+-nature of problems
+-when to use parallel
+-when to use asynchronous
+
+Parallel Streams:
+-collection pipeline pattern
+-from imperative to functional
+-benefits of the pipeline pattern
+-parallel as a master switch
+-sequential execution
+-stream to parallel stream
+-observing threads
+-order of execution
+-controlling the order
+-parallel and filter
+-parallel and map
+-parallel and reduce
+-Using parallel streams
+ -on an IO problem
+ -on a computational problem
+-How many threads?
+-Formula to decide number of threads
+-Default number of threads
+-Configuring number of threads JVM wide 
+	-Djava.util.concurrent.ForkJoinPool.common.parallelism=100
+-Configuring programmatically
+-Parallel does not always mean fast
+ -how to decide to make parallel
+-When parallel makes no sense
+
+CompletableFutures:
+-Asynchronous execution
+-Drawbacks of Future
+-Lessons from JavaScript
+-Callbacks
+	-lacks consistency
+	-hard to compose
+	-hard to deal with errors
+-Promises
+ -may resolve, reject, or be pending
+ -data channel and error channel
+ -failure/error is like data
+ -easy to compose
+-What about Java?
+-CompletableFuture in Java is Promises in JavaScript
+-stages
+-one stage completes and another stage may run
+-creating a completable future
+-get vs. getNow
+-thread of execution
+-changing the pool
+-async vs. non-async
+-thenAccept
+-thenApply
+-thenRun
+-creating pipe, then completing
+-dealing with exceptions
+-chaining
+-succeed on timeout
+-fail on timeout
+-combine
+-compose
+
+Summary:
+
+Download:
+
+http://www.agiledeveloper.com download link
